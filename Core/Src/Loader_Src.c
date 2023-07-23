@@ -12,6 +12,7 @@
 
 #define LOADER_OK   0x1
 #define LOADER_FAIL 0x0
+#define KeepInCompilation __root
 
 extern void SystemClock_Config(void);
 extern void MX_SPI2_Init(void);
@@ -25,7 +26,7 @@ extern void MX_GPIO_Init(void);
  */
 int Init(void)
 {
-	*(uint32_t*)0xE000EDF0 = 0xA05F0000;
+	*(uint32_t*)0xE000EDF0=0xA05F0000; //enable interrupts in debug
 
 	SystemInit();
 
@@ -42,7 +43,6 @@ int Init(void)
 
 	__set_PRIMASK(0);	//enable interrupts
 
-	HAL_DeInit();
 	HAL_Init();
 
 	/* Configure the system clock */
@@ -148,13 +148,13 @@ uint32_t CheckSum(uint32_t StartAddress, uint32_t Size, uint32_t InitVal)
 
 	for(cnt=0; cnt<Size ; cnt+=4)
 	{
-		sFLASH_ReadBuffer(&value, StartAddress ,1);
+		sFLASH_ReadBuffer(&value, StartAddress    , 1);
 		Val = value;
-		sFLASH_ReadBuffer(&value, StartAddress + 1,1);
+		sFLASH_ReadBuffer(&value, StartAddress + 1, 1);
 		Val+= value<<8;
-		sFLASH_ReadBuffer(&value, StartAddress + 2,1);
+		sFLASH_ReadBuffer(&value, StartAddress + 2, 1);
 		Val+= value<<16;
-		sFLASH_ReadBuffer(&value, StartAddress + 3,1);
+		sFLASH_ReadBuffer(&value, StartAddress + 3, 1);
 		Val+= value<<24;
 		if(missalignementAddress)
 		{
@@ -238,8 +238,7 @@ uint64_t Verify(uint32_t MemoryAddr, uint32_t RAMBufferAddr, uint32_t Size, uint
 	while (Size>VerifiedData)
 	{
 		sFLASH_ReadBuffer(&TmpBuffer, MemoryAddr+VerifiedData, 1);
-
-		if (TmpBuffer != *((uint8_t*)RAMBufferAddr+VerifiedData))
+		if (TmpBuffer != *((uint8_t*)RAMBufferAddr + VerifiedData))
 			return ((checksum<<32) + MemoryAddr+VerifiedData);
 
 		VerifiedData++;

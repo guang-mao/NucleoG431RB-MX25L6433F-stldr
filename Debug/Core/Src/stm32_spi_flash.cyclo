@@ -1,8 +1,0 @@
-stm32_spi_flash.c:26:6:sFLASH_EraseSector	1
-stm32_spi_flash.c:57:6:sFLASH_EraseChip	1
-stm32_spi_flash.c:91:6:sFLASH_WritePage	1
-stm32_spi_flash.c:127:6:sFLASH_ReadBuffer	1
-stm32_spi_flash.c:159:6:sFLASH_WriteBuffer	8
-stm32_spi_flash.c:240:10:sFLASH_ReadID	1
-stm32_spi_flash.c:266:6:sFLASH_WriteEnable	1
-stm32_spi_flash.c:289:6:sFLASH_WaitForWriteEnd	2
